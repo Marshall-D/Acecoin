@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
+import { useFormik } from 'formik';
+
 
 import "../styles/Acecoin.css";
 
@@ -11,77 +13,84 @@ import verified_badge from "../assets/verified-badge.svg";
 import dots from "../assets/dots.svg";
 import dockets from "../assets/docket.png";
 
-const AceCoin = () => {
-  const [mastercard, setMastercard] = useState("");
-  const [month, setMonth] = useState("");
-  const [year, setYear] = useState("");
-  const [password, setPassword] = useState("");
-  const [cvv, setCvv] = useState("");
+const validate = values => {
+  const errors = {};
 
+  if (!values.mastercard) {
+    errors.mastercard = 'Required';
+  } else if (values.mastercard.length  !==16) {
+    errors.mastercard = 'Must be 16 digits';
+  
+  
+  } else if ( !(/^[0-9]+$/i).test(values.mastercard)) {
 
-  const mastercardHandler = (event) => {
-    setMastercard(event.target.value);
-  };
-  const cvvHandler = (event) => {
-    setCvv(event.target.value);
-  };
-  const monthHandler = (event) => {
-    setMonth(event.target.value);
-  };
-  const yearHandler = (event) => {
-    setYear(event.target.value);
-  };
-  const passwordHandler = (event) => {
-    setPassword(event.target.value);
-  };
-  const submitHandler = (e) => {
-
-    e.preventDefault();
-
-    if (mastercard.length === 0){
-      // console.log(0)
-          window.alert("please  fill in mastercard field");
-
-    } else if (cvv.length === 0){
-      window.alert("please  fill in Cvv field");
-
-    }else if (cvv.length === 0){
-      window.alert("please  fill in Cvv field");
-
-    }else if (month.length === 0){
-      window.alert("please  fill in month field in expiry date");
-
-    }else if (year.length === 0){
-      window.alert("please  fill in year field in  expiry date");
-
-    }else if (password.length === 0){
-      window.alert("please  fill in password");
-
-    }
-    else {
-
-
-    const details = {
-      title:"SUCCESS",
-      mastercard: mastercard,
-      cvv: cvv,
-      month: month,
-      year: year,
-      password: password,
-    };
-    window.alert(JSON.stringify(details));
-
-    setMastercard("");
-          setCvv("");
-      setMonth("");
-      setYear("");
-      setPassword("");
+    errors.mastercard = 'Must be numbers ';
   }
-  };
- 
 
+  if (!values.month) {
+    errors.month = 'Required';
+  } else if (values.month.length > 2) {
+    errors.month = 'Invalid date. Must be 2 charcters or less';
+  }
+  else if ( !(/^[0-9]+$/i).test(values.month)) {
+
+    errors.month = 'Invalid date. Must be numbers ';
+  }
+
+  if (!values.year) {
+    errors.year = 'Required';
+  } else if (values.year.length > 2) {
+    errors.year = 'Invalid date. Must be 2 charcters or less';
+  }
+  else if ( !(/^[0-9]+$/i).test(values.year)) {
+
+    errors.year = 'Invalid date.Must be numbers ';
+  }
+
+  if (!values.cvv) {
+    errors.cvv = 'Required';
+  } 
+  else if (!(values.cvv.length == 4 || values.cvv.length == 3 )) {
+    errors.cvv = 'Invalid cvv. Should be 3 or 4 digits';
+  }
+  else if ( !(/^[0-9]+$/i).test(values.cvv)) {
+
+    errors.cvv = 'Invalid cvv.Must be numbers ';
+  }
+
+
+
+
+  if (!values.password){
+    errors.password = 'Required';
+  }
+
+
+
+  return errors;
+};
+
+
+const AceCoin = () => {
+
+  const formik = useFormik({
+    initialValues: {
+      mastercard: '',
+      cvv: '',
+      month: '',
+      year: '',
+      password: ''
+      
+    },
+    validate,
+    onSubmit: (values,{resetForm}) => {
+      window.alert(JSON.stringify(values, null, 2));
+      resetForm({values:""})
+    }
+  });
+  
   return (
-    <body>
+    <body className="body">
       <div className="wrapper grid grid-cols-12">
         <div className="close-btn">
           <svg
@@ -111,16 +120,17 @@ const AceCoin = () => {
               </div>
             </header>
             <section className="form-body">
-              <form onSubmit={submitHandler} action="">
+              <form onSubmit= {formik.handleSubmit}
+              action="">
                 <div className="input-group">
                   <div className="header">
                     <div className="description">
                       <h2 className="title">card number</h2>
                       <p className="desc">
-                        Enter the 15-digit card number on the card
+                        Enter the 16-digit card number on the card
                       </p>
                     </div>
-                    <button className="edit">
+                    <button type="button" className="edit">
                       <svg
                         version="1.1"
                         id="Layer_1"
@@ -155,17 +165,24 @@ const AceCoin = () => {
                   <div className="main">
                     <img src={mc_symbol} alt="" className="leading-icon" />
                     <input
-                    value={mastercard}
-                      onChange={mastercardHandler}
+                    id="mastercard"
+                  
                       type="text"
                       placeholder="2412   -   7512   -   3412   -   3456"
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                      value={formik.values.mastercard}
                     />
+           
                     <img
                       src={verified_badge}
                       alt=""
                       className="trailing-icon"
                     />
                   </div>
+                  {formik.touched.mastercard && formik.errors.mastercard ? (
+         <div style={{color:"red"}}>{formik.errors.mastercard}</div>
+       ) : null}
                 </div>
                 <div className="input-group __col">
                   <div className="header">
@@ -177,16 +194,30 @@ const AceCoin = () => {
                     </div>
                   </div>
                   <div className="main">
-                    <input
-                                        value={cvv}
 
-                      onChange={cvvHandler}
+
+
+
+
+
+
+                    <input
+                                        id="cvv"
+
                       type="text"
                       placeholder="327"
+                       onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                      value={formik.values.cvv}
                     />
+                      {formik.touched.cvv && formik.errors.cvv ? (
+         <div style={{color:"red"}}>{formik.errors.cvv}</div>
+       ) : null}
                     <img src={dots} alt="" className="trailing-icon" />
                   </div>
                 </div>
+              
+
                 <div className="input-group __col">
                   <div className="header">
                     <div className="description">
@@ -199,23 +230,35 @@ const AceCoin = () => {
                   <div className="grp">
                     <div className="main __date">
                       <input
-                                          value={month}
-
-                        onChange={monthHandler}
+                      id="month"
+                      
                         type="text"
                         placeholder="09"
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        value={formik.values.month}
                       />
+                         {formik.touched.month && formik.errors.month ? (
+         <div style={{color:"red"}}>{formik.errors.month}</div>
+       ) : null}
                     </div>
+                 
+
                     <span className="divider">/</span>
                     <div className="main __date">
                       <input
-                                          value={year}
-
-                        onChange={yearHandler}
+                     id="year"
                         type="text"
                         placeholder="22"
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        value={formik.values.year}
                       />
+                         {formik.touched.year && formik.errors.year ? (
+         <div style={{color:"red"}}>{formik.errors.year}</div>
+       ) : null}
                     </div>
+                 
                   </div>
                 </div>
                 <div className="input-group __col">
@@ -227,16 +270,22 @@ const AceCoin = () => {
                   </div>
                   <div className="main">
                     <input
-                                        value={password}
-
-                      onChange={passwordHandler}
+                  id="password"
                       type="password"
                       placeholder="******"
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                      value={formik.values.password}
                     />
+                       {formik.touched.password && formik.errors.password ? (
+         <div style={{color:"red"}}>{formik.errors.password}</div>
+       ) : null}
                     <img src={dots} alt="" className="trailing-icon" />
                   </div>
+               
                 </div>
-                <button type="submit" className="btn-submit">
+                
+                <button  type="submit" className="btn-submit">
                   pay now
                 </button>
               </form>
