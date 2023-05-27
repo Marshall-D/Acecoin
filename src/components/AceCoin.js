@@ -1,9 +1,11 @@
+import React, {useState}from "react";
+
 import '../styles/Acecoin.css';
 
 import wifi from "../assets/wifi.png"
 import apple_13 from "../assets/apple-13.svg"
 import chip from "../assets/chip.png"
-import mastercard from "../assets/mastercard-2.svg"
+import mastercardImg from "../assets/mastercard-2.svg"
 import mc_symbol from "../assets/mc_symbol.svg"
 import verified_badge from "../assets/verified-badge.svg"
 import dots from "../assets/dots.svg"
@@ -14,6 +16,61 @@ import dockets from "../assets/docket.png"
 
 
 const AceCoin = () => {
+  const [mastercard,setMastercard]=useState()
+  const [month,setMonth]=useState()
+  const [year,setYear]=useState()
+  const [password,setPassword]=useState()
+  const [cvv,setCvv]=useState()
+
+
+
+const submitHandler =(e)=> {
+    // alerts the inputed details
+
+  e.preventDefault()
+  const details = {
+    mastercard:mastercard,
+    month:month,
+    year:year, 
+    password:password,
+    cvv:cvv
+  }
+  window.alert(JSON.stringify(details))
+  // window.alert(password)
+  // window.alert(mastercard)
+  // window.alert(month)
+  // window.alert(year)
+
+;
+}
+const mastercardHandler =(event)=> {
+  // gets the mastercard details
+  setMastercard(event.target.value);
+
+};
+const cvvHandler =(event)=> {
+  // gets the mastercard details
+  setCvv(event.target.value);
+
+};
+const monthHandler =(event)=> {
+  // gets the month details
+  setMonth(event.target.value)
+
+};
+const yearHandler =(event)=> {
+  // gets the year details
+  setYear(event.target.value);
+
+
+};
+const passwordHandler =(event)=> {
+  setPassword(event.target.value);
+  // gets the password details
+
+};
+
+  
   return (
     <body>
       <div className="wrapper grid grid-cols-12">
@@ -45,7 +102,7 @@ const AceCoin = () => {
               </div>
             </header>
             <section className="form-body">
-              <form action="">
+              <form onSubmit={submitHandler} action="">
                 <div className="input-group">
                   <div className="header">
                     <div className="description">
@@ -92,7 +149,7 @@ const AceCoin = () => {
                       alt=""
                       className="leading-icon"
                     />
-                    <input
+                    <input onChange={mastercardHandler}
                       type="text"
                       placeholder="2412   -   7512   -   3412   -   3456"
                     />
@@ -113,7 +170,7 @@ const AceCoin = () => {
                     </div>
                   </div>
                   <div className="main">
-                    <input type="text" placeholder="327" />
+                    <input onChange={cvvHandler} type="text" placeholder="327" />
                     <img src={dots} alt="" className="trailing-icon" />
                   </div>
                 </div>
@@ -126,11 +183,11 @@ const AceCoin = () => {
                   </div>
                   <div className="grp">
                     <div className="main __date">
-                      <input type="text" placeholder="09" />
+                      <input onChange={monthHandler} type="text" placeholder="09" />
                     </div>
                     <span className="divider">/</span>
                     <div className="main __date">
-                      <input type="text" placeholder="22" />
+                      <input  onChange={yearHandler} type="text" placeholder="22" />
                     </div>
                   </div>
                 </div>
@@ -142,7 +199,7 @@ const AceCoin = () => {
                     </div>
                   </div>
                   <div className="main">
-                    <input type="password" placeholder="******" />
+                    <input onChange={passwordHandler} type="password" placeholder="******" />
                     <img src={dots} alt="" className="trailing-icon" />
                   </div>
                 </div>
@@ -175,7 +232,7 @@ const AceCoin = () => {
               </div>
               <div className="credit-card__footer">
                 <span className="expiry">09/22</span>
-                <img src={mastercard} alt="" className="logo" />
+                <img src={mastercardImg} alt="" className="logo" />
               </div>
               <div className="card__design">
                 <span className="inner"></span>
