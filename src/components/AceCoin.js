@@ -1,76 +1,85 @@
-import React, {useState}from "react";
+import React, { useState } from "react";
 
-import '../styles/Acecoin.css';
+import "../styles/Acecoin.css";
 
-import wifi from "../assets/wifi.png"
-import apple_13 from "../assets/apple-13.svg"
-import chip from "../assets/chip.png"
-import mastercardImg from "../assets/mastercard-2.svg"
-import mc_symbol from "../assets/mc_symbol.svg"
-import verified_badge from "../assets/verified-badge.svg"
-import dots from "../assets/dots.svg"
-import dockets from "../assets/docket.png"
-
-
-
-
+import wifi from "../assets/wifi.png";
+import apple_13 from "../assets/apple-13.svg";
+import chip from "../assets/chip.png";
+import mastercardImg from "../assets/mastercard-2.svg";
+import mc_symbol from "../assets/mc_symbol.svg";
+import verified_badge from "../assets/verified-badge.svg";
+import dots from "../assets/dots.svg";
+import dockets from "../assets/docket.png";
 
 const AceCoin = () => {
-  const [mastercard,setMastercard]=useState()
-  const [month,setMonth]=useState()
-  const [year,setYear]=useState()
-  const [password,setPassword]=useState()
-  const [cvv,setCvv]=useState()
+  const [mastercard, setMastercard] = useState("");
+  const [month, setMonth] = useState("");
+  const [year, setYear] = useState("");
+  const [password, setPassword] = useState("");
+  const [cvv, setCvv] = useState("");
 
 
+  const mastercardHandler = (event) => {
+    setMastercard(event.target.value);
+  };
+  const cvvHandler = (event) => {
+    setCvv(event.target.value);
+  };
+  const monthHandler = (event) => {
+    setMonth(event.target.value);
+  };
+  const yearHandler = (event) => {
+    setYear(event.target.value);
+  };
+  const passwordHandler = (event) => {
+    setPassword(event.target.value);
+  };
+  const submitHandler = (e) => {
 
-const submitHandler =(e)=> {
-    // alerts the inputed details
+    e.preventDefault();
 
-  e.preventDefault()
-  const details = {
-    mastercard:mastercard,
-    month:month,
-    year:year, 
-    password:password,
-    cvv:cvv
+    if (mastercard.length === 0){
+      // console.log(0)
+          window.alert("please  fill in mastercard field");
+
+    } else if (cvv.length === 0){
+      window.alert("please  fill in Cvv field");
+
+    }else if (cvv.length === 0){
+      window.alert("please  fill in Cvv field");
+
+    }else if (month.length === 0){
+      window.alert("please  fill in month field in expiry date");
+
+    }else if (year.length === 0){
+      window.alert("please  fill in year field in  expiry date");
+
+    }else if (password.length === 0){
+      window.alert("please  fill in password");
+
+    }
+    else {
+
+
+    const details = {
+      title:"SUCCESS",
+      mastercard: mastercard,
+      cvv: cvv,
+      month: month,
+      year: year,
+      password: password,
+    };
+    window.alert(JSON.stringify(details));
+
+    setMastercard("");
+          setCvv("");
+      setMonth("");
+      setYear("");
+      setPassword("");
   }
-  window.alert(JSON.stringify(details))
-  // window.alert(password)
-  // window.alert(mastercard)
-  // window.alert(month)
-  // window.alert(year)
+  };
+ 
 
-;
-}
-const mastercardHandler =(event)=> {
-  // gets the mastercard details
-  setMastercard(event.target.value);
-
-};
-const cvvHandler =(event)=> {
-  // gets the mastercard details
-  setCvv(event.target.value);
-
-};
-const monthHandler =(event)=> {
-  // gets the month details
-  setMonth(event.target.value)
-
-};
-const yearHandler =(event)=> {
-  // gets the year details
-  setYear(event.target.value);
-
-
-};
-const passwordHandler =(event)=> {
-  setPassword(event.target.value);
-  // gets the password details
-
-};
-
-  
   return (
     <body>
       <div className="wrapper grid grid-cols-12">
@@ -144,12 +153,10 @@ const passwordHandler =(event)=> {
                     </button>
                   </div>
                   <div className="main">
-                    <img
-                      src={mc_symbol}
-                      alt=""
-                      className="leading-icon"
-                    />
-                    <input onChange={mastercardHandler}
+                    <img src={mc_symbol} alt="" className="leading-icon" />
+                    <input
+                    value={mastercard}
+                      onChange={mastercardHandler}
                       type="text"
                       placeholder="2412   -   7512   -   3412   -   3456"
                     />
@@ -170,7 +177,13 @@ const passwordHandler =(event)=> {
                     </div>
                   </div>
                   <div className="main">
-                    <input onChange={cvvHandler} type="text" placeholder="327" />
+                    <input
+                                        value={cvv}
+
+                      onChange={cvvHandler}
+                      type="text"
+                      placeholder="327"
+                    />
                     <img src={dots} alt="" className="trailing-icon" />
                   </div>
                 </div>
@@ -178,16 +191,30 @@ const passwordHandler =(event)=> {
                   <div className="header">
                     <div className="description">
                       <h2 className="title">expiry date</h2>
-                      <p className="desc">Enter the expiration date of the card</p>
+                      <p className="desc">
+                        Enter the expiration date of the card
+                      </p>
                     </div>
                   </div>
                   <div className="grp">
                     <div className="main __date">
-                      <input onChange={monthHandler} type="text" placeholder="09" />
+                      <input
+                                          value={month}
+
+                        onChange={monthHandler}
+                        type="text"
+                        placeholder="09"
+                      />
                     </div>
                     <span className="divider">/</span>
                     <div className="main __date">
-                      <input  onChange={yearHandler} type="text" placeholder="22" />
+                      <input
+                                          value={year}
+
+                        onChange={yearHandler}
+                        type="text"
+                        placeholder="22"
+                      />
                     </div>
                   </div>
                 </div>
@@ -199,7 +226,13 @@ const passwordHandler =(event)=> {
                     </div>
                   </div>
                   <div className="main">
-                    <input onChange={passwordHandler} type="password" placeholder="******" />
+                    <input
+                                        value={password}
+
+                      onChange={passwordHandler}
+                      type="password"
+                      placeholder="******"
+                    />
                     <img src={dots} alt="" className="trailing-icon" />
                   </div>
                 </div>
@@ -253,8 +286,7 @@ const passwordHandler =(event)=> {
                     <span className="inner-text">1266201</span>
                   </span>
                 </div>
-                <div 
-                className="data">
+                <div className="data">
                   <span className="title">product</span>
                   <span className="value">
                     <span className="inner-text">macbook air</span>
