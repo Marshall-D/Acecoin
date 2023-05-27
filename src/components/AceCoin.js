@@ -19,12 +19,12 @@ const validate = values => {
   if (!values.mastercard) {
     errors.mastercard = 'Required';
   } else if (values.mastercard.length  !==16) {
-    errors.mastercard = 'Must be 16 digits';
+    errors.mastercard = 'Invalid card details. Must be 16 digits';
   
   
   } else if ( !(/^[0-9]+$/i).test(values.mastercard)) {
 
-    errors.mastercard = 'Must be numbers ';
+    errors.mastercard = 'Invalid card details. Must be numbers ';
   }
 
   if (!values.month) {
