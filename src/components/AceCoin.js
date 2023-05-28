@@ -2,7 +2,6 @@ import React from "react";
 import { useFormik } from "formik";
 import MaskedInput from "react-text-mask";
 
-
 import "../styles/Acecoin.css";
 
 import wifi from "../assets/wifi.png";
@@ -14,94 +13,47 @@ import verified_badge from "../assets/verified-badge.svg";
 import dots from "../assets/dots.svg";
 import dockets from "../assets/docket.png";
 
-
-
-
-const mastercardMask = [
-  
-  /[1-9]/,
-  /\d/,
-  /\d/, 
-  /\d/,
-  " ",
-  "-",
-  " ",
-  /\d/,
-  /\d/,
-  /\d/,
-  /\d/,
-  " ",
-  "-",
-  " ",
-  /\d/,
-  /\d/,
-  /\d/,
-  /\d/,
-  " ",
-  "-",
-  " ",
-  /\d/,
-  /\d/,
-  /\d/,
-  /\d/
-];
+const mastercardMask = [/[1-9]/,/\d/,/\d/,/\d/," ","-"," ",/\d/,/\d/,/\d/,/\d/," ","-"," ",/\d/,/\d/,/\d/,/\d/," ","-"," ",/\d/,/\d/,/\d/,/\d/,];
+const cvvMask = [/[1-9]/,/\d/,/\d/,/\d/];
+const monthMask = [/[0-9]/,/\d/];
+const yearMask = [/[0-9]/,/\d/];
 
 const validate = (values) => {
-  
   const errors = {};
 
   if (!values.mastercard) {
     errors.mastercard = "Required";
   } else if (values.mastercard.trim().length !== 25) {
     errors.mastercard = "Invalid card details. Must be 16 digits";
-  
   }
 
   if (!values.month) {
     errors.month = "Required";
-  } else if (values.month.trim().length > 2) {
-    errors.month = "Invalid date.";
-  } else if (!/^[0-9]+$/i.test(values.month.trim())) {
-    errors.month = "Invalid date.";
-  }
+  } 
 
   if (!values.year) {
     errors.year = "Required";
-  } else if (values.year.trim().length > 2) {
-    errors.year = "Invalid date.";
-  } else if (!/^[0-9]+$/i.test(values.year.trim())) {
-    errors.year = "Invalid date.";
-  }
+  } 
 
   if (!values.cvv) {
     errors.cvv = "Required";
-  } else if (!(values.cvv.trim().length === 4 || values.cvv.trim().length === 3)) {
-    errors.cvv = "Invalid cvv. Should be 3 or 4 digits";
-  } else if (!/^[0-9]+$/i.test(values.cvv.trim())) {
-    errors.cvv = "Invalid cvv.Must be numbers ";
-  }
+  } 
 
   if (!values.password) {
     errors.password = "Required";
   }
 
-  
-  
-
   return errors;
 };
 
 const AceCoin = () => {
-
-
-
   const formik = useFormik({
     initialValues: {
       mastercard: "",
       cvv: "",
       month: "",
       year: "",
-      password: ""
+      password: "",
     },
     validate,
     onSubmit: (values, { resetForm }) => {
@@ -141,9 +93,7 @@ const AceCoin = () => {
               </div>
             </header>
             <section className="form-body">
-              <form
-               onSubmit={formik.handleSubmit} 
-              action="">
+              <form onSubmit={formik.handleSubmit} action="">
                 <div className="input-group">
                   <div className="header">
                     <div className="description">
@@ -218,7 +168,9 @@ const AceCoin = () => {
                     </div>
                   </div>
                   <div className="main">
-                    <input
+                    <MaskedInput
+                     mask={cvvMask}
+                     guide={false}
                       id="cvv"
                       type="text"
                       placeholder="327"
@@ -244,7 +196,9 @@ const AceCoin = () => {
                   </div>
                   <div className="grp">
                     <div className="main __date">
-                      <input
+                      <MaskedInput
+                       mask={monthMask}
+                       guide={false}
                         id="month"
                         type="text"
                         placeholder="09"
@@ -252,33 +206,45 @@ const AceCoin = () => {
                         onBlur={formik.handleBlur}
                         value={formik.values.month}
                       />
-                     
                     </div>
 
                     <span className="divider">/</span>
                     <div className="main __date">
-                      <input
-                        id="year"
+                    <MaskedInput
+                       mask={yearMask}
+                       guide={false}                        id="year"
                         type="text"
                         placeholder="22"
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
                         value={formik.values.year}
                       />
-                    
                     </div>
                   </div>
-                  
                 </div>
                 {formik.touched.month && formik.errors.month ? (
-                        <div style={{ color: "red",marginLeft:"300px",marginTop: "-30px" }}>
-                          {formik.errors.month}
-                        </div>
-                      ) : null}
-                        {formik.touched.year && formik.errors.year ? (
-                        <div style={{ color: "red",marginLeft:"530px",marginTop: "-25px" }}>{formik.errors.year}</div>
-                      ) : null}
-               
+                  <div
+                    style={{
+                      color: "red",
+                      marginLeft: "300px",
+                      marginTop: "-30px",
+                    }}
+                  >
+                    {formik.errors.month}
+                  </div>
+                ) : null}
+                {formik.touched.year && formik.errors.year ? (
+                  <div
+                    style={{
+                      color: "red",
+                      marginLeft: "530px",
+                      marginTop: "-25px",
+                    }}
+                  >
+                    {formik.errors.year}
+                  </div>
+                ) : null}
+
                 <div className="input-group __col">
                   <div className="header">
                     <div className="description">
@@ -304,9 +270,11 @@ const AceCoin = () => {
                   </div>
                 </div>
 
-                <button 
-                disabled={!(formik.isValid && formik.dirty)}
-                type="submit" className="btn-submit">
+                <button
+                  disabled={!(formik.isValid && formik.dirty)}
+                  type="submit"
+                  className="btn-submit"
+                >
                   pay now
                 </button>
               </form>
