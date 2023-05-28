@@ -26,22 +26,22 @@ const validate = (values) => {
   if (!values.month) {
     errors.month = "Required";
   } else if (values.month.length > 2) {
-    errors.month = "Invalid date. Must be 2 charcters or less";
+    errors.month = "Invalid date.";
   } else if (!/^[0-9]+$/i.test(values.month)) {
-    errors.month = "Invalid date. Must be numbers ";
+    errors.month = "Invalid date.";
   }
 
   if (!values.year) {
     errors.year = "Required";
   } else if (values.year.length > 2) {
-    errors.year = "Invalid date. Must be 2 charcters or less";
+    errors.year = "Invalid date.";
   } else if (!/^[0-9]+$/i.test(values.year)) {
-    errors.year = "Invalid date.Must be numbers ";
+    errors.year = "Invalid date.";
   }
 
   if (!values.cvv) {
     errors.cvv = "Required";
-  } else if (!(values.cvv.length == 4 || values.cvv.length == 3)) {
+  } else if (!(values.cvv.length === 4 || values.cvv.length === 3)) {
     errors.cvv = "Invalid cvv. Should be 3 or 4 digits";
   } else if (!/^[0-9]+$/i.test(values.cvv)) {
     errors.cvv = "Invalid cvv.Must be numbers ";
@@ -50,6 +50,9 @@ const validate = (values) => {
   if (!values.password) {
     errors.password = "Required";
   }
+
+  
+  
 
   return errors;
 };
@@ -61,7 +64,7 @@ const AceCoin = () => {
       cvv: "",
       month: "",
       year: "",
-      password: "",
+      password: ""
     },
     validate,
     onSubmit: (values, { resetForm }) => {
@@ -207,11 +210,7 @@ const AceCoin = () => {
                         onBlur={formik.handleBlur}
                         value={formik.values.month}
                       />
-                      {formik.touched.month && formik.errors.month ? (
-                        <div style={{ color: "red" }}>
-                          {formik.errors.month}
-                        </div>
-                      ) : null}
+                     
                     </div>
 
                     <span className="divider">/</span>
@@ -224,12 +223,20 @@ const AceCoin = () => {
                         onBlur={formik.handleBlur}
                         value={formik.values.year}
                       />
-                      {formik.touched.year && formik.errors.year ? (
-                        <div style={{ color: "red" }}>{formik.errors.year}</div>
-                      ) : null}
+                    
                     </div>
                   </div>
+                  
                 </div>
+                {formik.touched.month && formik.errors.month ? (
+                        <div style={{ color: "red",marginLeft:"300px",marginTop: "-30px" }}>
+                          {formik.errors.month}
+                        </div>
+                      ) : null}
+                        {formik.touched.year && formik.errors.year ? (
+                        <div style={{ color: "red",marginLeft:"530px",marginTop: "-25px" }}>{formik.errors.year}</div>
+                      ) : null}
+               
                 <div className="input-group __col">
                   <div className="header">
                     <div className="description">
@@ -255,7 +262,9 @@ const AceCoin = () => {
                   </div>
                 </div>
 
-                <button type="submit" className="btn-submit">
+                <button 
+                disabled={!(formik.isValid && formik.dirty)}
+                type="submit" className="btn-submit">
                   pay now
                 </button>
               </form>

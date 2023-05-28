@@ -5,13 +5,15 @@ html {
 .body {
   background: url("../assets/bg.jpg");
   background-repeat: no-repeat;
-  background-position: left;
+  background-position:left;
+  padding-bottom:5em;
+  padding-top:5em;
 }
 
 .wrapper {
   position: relative;
   max-width: 1200px;
-  margin: 0 auto;
+  margin: 10px auto;
   padding-top: 6em;
   font-family: "Poppins", sans-serif;
   background: #ffffff;
@@ -85,12 +87,13 @@ html {
   justify-content: center;
   align-items: center;
   border-radius: 4px;
-  margin-left: -4px;
+  
+  margin-left: 2px;
 }
 
 .form-header .timer-divider {
   position: relative;
-  right: 2px;
+  /* right: 2px; */
   margin: 0.3em;
 }
 
@@ -258,6 +261,8 @@ html {
 
 .form-body form .btn-submit:hover {
   background-color: #1254d6;
+}.form-body form .btn-submit:disabled {
+  background-color: grey;
 }
 
 .checkout {
@@ -296,7 +301,7 @@ html {
 }
 
 .checkout .credit-card__head .chip {
-  height: 3.5em;
+  height: 3.0em;
 }
 
 .checkout .credit-card__body {
