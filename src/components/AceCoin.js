@@ -25,25 +25,25 @@ const validate = (values) => {
 
   if (!values.month) {
     errors.month = "Required";
-  } else if (values.month.length > 2) {
+  } else if (values.month.trim().length > 2) {
     errors.month = "Invalid date.";
-  } else if (!/^[0-9]+$/i.test(values.month)) {
+  } else if (!/^[0-9]+$/i.test(values.month.trim())) {
     errors.month = "Invalid date.";
   }
 
   if (!values.year) {
     errors.year = "Required";
-  } else if (values.year.length > 2) {
+  } else if (values.year.trim().length > 2) {
     errors.year = "Invalid date.";
-  } else if (!/^[0-9]+$/i.test(values.year)) {
+  } else if (!/^[0-9]+$/i.test(values.year.trim())) {
     errors.year = "Invalid date.";
   }
 
   if (!values.cvv) {
     errors.cvv = "Required";
-  } else if (!(values.cvv.length === 4 || values.cvv.length === 3)) {
+  } else if (!(values.cvv.trim().length === 4 || values.cvv.trim().length === 3)) {
     errors.cvv = "Invalid cvv. Should be 3 or 4 digits";
-  } else if (!/^[0-9]+$/i.test(values.cvv)) {
+  } else if (!/^[0-9]+$/i.test(values.cvv.trim())) {
     errors.cvv = "Invalid cvv.Must be numbers ";
   }
 
