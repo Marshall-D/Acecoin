@@ -15,7 +15,12 @@ import dockets from "../assets/docket.png";
 
 const mastercardMask = [/[0-9]/,/\d/,/\d/,/\d/," ","-"," ",/\d/,/\d/,/\d/,/\d/," ","-"," ",/\d/,/\d/,/\d/,/\d/," ","-"," ",/\d/,/\d/,/\d/,/\d/,];
 const cvvMask = [/[0-9]/,/\d/,/\d/,/\d/];
-const monthMask = [/[0-9]/,/\d/];
+// const monthMask = [/^(?:1[0-2]|[1-9])/];
+// const monthFirstPart = "0-1";
+
+const monthMask = [/\d/,/\d/];
+
+
 const yearMask = [/[2]/,/[4-9]/];
 
 const validate = (values) => {
@@ -65,6 +70,7 @@ const AceCoin = () => {
       resetForm({ values: "" });
     },
   });
+
 
   return (
     <div className="body">
@@ -176,7 +182,8 @@ const AceCoin = () => {
                      mask={cvvMask}
                      guide={false}
                       id="cvv"
-                      type="text"
+                      type="number"
+                      max={12}
                       placeholder="327"
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
