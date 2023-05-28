@@ -63,7 +63,7 @@ const AceCoin = () => {
   });
 
   return (
-    <body className="body">
+    <div className="body">
       <div className="wrapper grid grid-cols-12">
         <div className="close-btn">
           <svg
@@ -357,7 +357,7 @@ const AceCoin = () => {
           </div>
         </div>
       </div>
-    </body>
+    </div>
   );
 };
 
