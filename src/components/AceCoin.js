@@ -17,9 +17,9 @@ const validate = (values) => {
 
   if (!values.mastercard) {
     errors.mastercard = "Required";
-  } else if (values.mastercard.length !== 16) {
+  } else if (values.mastercard.trim().length !== 16) {
     errors.mastercard = "Invalid card details. Must be 16 digits";
-  } else if (!/^[0-9]+$/i.test(values.mastercard)) {
+  } else if (!/^[0-9]+$/i.test(values.mastercard.trim())) {
     errors.mastercard = "Invalid card details. Must be numbers ";
   }
 
