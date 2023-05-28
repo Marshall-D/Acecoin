@@ -13,10 +13,10 @@ import verified_badge from "../assets/verified-badge.svg";
 import dots from "../assets/dots.svg";
 import dockets from "../assets/docket.png";
 
-const mastercardMask = [/[1-9]/,/\d/,/\d/,/\d/," ","-"," ",/\d/,/\d/,/\d/,/\d/," ","-"," ",/\d/,/\d/,/\d/,/\d/," ","-"," ",/\d/,/\d/,/\d/,/\d/,];
-const cvvMask = [/[1-9]/,/\d/,/\d/,/\d/];
+const mastercardMask = [/[0-9]/,/\d/,/\d/,/\d/," ","-"," ",/\d/,/\d/,/\d/,/\d/," ","-"," ",/\d/,/\d/,/\d/,/\d/," ","-"," ",/\d/,/\d/,/\d/,/\d/,];
+const cvvMask = [/[0-9]/,/\d/,/\d/,/\d/];
 const monthMask = [/[0-9]/,/\d/];
-const yearMask = [/[0-9]/,/\d/];
+const yearMask = [/[2]/,/[4-9]/];
 
 const validate = (values) => {
   const errors = {};
@@ -33,11 +33,15 @@ const validate = (values) => {
 
   if (!values.year) {
     errors.year = "Required";
-  } 
+  } else if (values.year.trim().length !== 2) {
+    errors.year = "Invalid year";
+  }
 
   if (!values.cvv) {
     errors.cvv = "Required";
-  } 
+  } else if (!(values.cvv.trim().length === 3 || values.cvv.trim().length === 4 )) {
+    errors.cvv = "Invalid cvv.";
+  }
 
   if (!values.password) {
     errors.password = "Required";
