@@ -1,5 +1,7 @@
 import React from "react";
 import { useFormik } from "formik";
+import MaskedInput from "react-text-mask";
+
 
 import "../styles/Acecoin.css";
 
@@ -12,15 +14,47 @@ import verified_badge from "../assets/verified-badge.svg";
 import dots from "../assets/dots.svg";
 import dockets from "../assets/docket.png";
 
+
+
+
+const mastercardMask = [
+  
+  /[1-9]/,
+  /\d/,
+  /\d/, 
+  /\d/,
+  " ",
+  "-",
+  " ",
+  /\d/,
+  /\d/,
+  /\d/,
+  /\d/,
+  " ",
+  "-",
+  " ",
+  /\d/,
+  /\d/,
+  /\d/,
+  /\d/,
+  " ",
+  "-",
+  " ",
+  /\d/,
+  /\d/,
+  /\d/,
+  /\d/
+];
+
 const validate = (values) => {
+  
   const errors = {};
 
   if (!values.mastercard) {
     errors.mastercard = "Required";
-  } else if (values.mastercard.trim().length !== 16) {
+  } else if (values.mastercard.trim().length !== 25) {
     errors.mastercard = "Invalid card details. Must be 16 digits";
-  } else if (!/^[0-9]+$/i.test(values.mastercard.trim())) {
-    errors.mastercard = "Invalid card details. Must be numbers ";
+  
   }
 
   if (!values.month) {
@@ -58,6 +92,9 @@ const validate = (values) => {
 };
 
 const AceCoin = () => {
+
+
+
   const formik = useFormik({
     initialValues: {
       mastercard: "",
@@ -104,7 +141,9 @@ const AceCoin = () => {
               </div>
             </header>
             <section className="form-body">
-              <form onSubmit={formik.handleSubmit} action="">
+              <form
+               onSubmit={formik.handleSubmit} 
+              action="">
                 <div className="input-group">
                   <div className="header">
                     <div className="description">
@@ -145,7 +184,10 @@ const AceCoin = () => {
                   </div>
                   <div className="main">
                     <img src={mc_symbol} alt="" className="leading-icon" />
-                    <input
+                    {/* <input */}
+                    <MaskedInput
+                      mask={mastercardMask}
+                      guide={false}
                       id="mastercard"
                       type="text"
                       placeholder="2412   -   7512   -   3412   -   3456"
