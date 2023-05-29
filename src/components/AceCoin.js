@@ -1,6 +1,7 @@
 import React from "react";
 import { useFormik } from "formik";
 import MaskedInput from "react-text-mask";
+import InputMask from "react-input-mask";
 
 import "../styles/Acecoin.css";
 
@@ -13,15 +14,65 @@ import verified_badge from "../assets/verified-badge.svg";
 import dots from "../assets/dots.svg";
 import dockets from "../assets/docket.png";
 
-const mastercardMask = [/[0-9]/,/\d/,/\d/,/\d/," ","-"," ",/\d/,/\d/,/\d/,/\d/," ","-"," ",/\d/,/\d/,/\d/,/\d/," ","-"," ",/\d/,/\d/,/\d/,/\d/,];
-const cvvMask = [/[0-9]/,/\d/,/\d/,/\d/];
+const mastercardMask = [
+  /[0-9]/,
+  /\d/,
+  /\d/,
+  /\d/,
+  " ",
+  "-",
+  " ",
+  /\d/,
+  /\d/,
+  /\d/,
+  /\d/,
+  " ",
+  "-",
+  " ",
+  /\d/,
+  /\d/,
+  /\d/,
+  /\d/,
+  " ",
+  "-",
+  " ",
+  /\d/,
+  /\d/,
+  /\d/,
+  /\d/,
+];
+
+const cvvMask = [/[0-9]/, /\d/, /\d/, /\d/];
+
 // const monthMask = [/^(?:1[0-2]|[1-9])/];
 // const monthFirstPart = "0-1";
 
-const monthMask = [/\d/,/\d/];
+// const monthMask = [/\d/, /\d/];
 
+/// beginning of month mask
+let monthMask = "mM";
+let formatChars = {
+  m: "[0-1]",
+  M: "[0-9]",
+};
 
-const yearMask = [/[2]/,/[4-9]/];
+let beforeMaskedValueChange = (newState, oldState, userInput) => {
+  let { value } = newState;
+
+  let dateParts = value.split("-");
+  let monthPart = dateParts[0];
+
+  // Conditional mask for the 2nd digit of month based on the first digit
+  if (monthPart.startsWith("1")) {
+    formatChars["M"] = "[0-2]"; // To block 13, 15, etc.
+  } else formatChars["M"] = "[1-9]"; // To allow 05, 08, etc - but blocking 00.
+
+  return { value, selection: newState.selection };
+};
+
+//// end of month mask
+
+const yearMask = [/[2]/, /[4-9]/];
 
 const validate = (values) => {
   const errors = {};
@@ -32,9 +83,12 @@ const validate = (values) => {
     errors.mastercard = "Invalid card details. Must be 16 digits";
   }
 
-  if (!values.month) {
+  if (!values.month.trim()) {
     errors.month = "Required";
-  } 
+  }
+  if (values.month.trim() == 0) {
+    errors.month = "Required";
+  }
 
   if (!values.year) {
     errors.year = "Required";
@@ -44,12 +98,16 @@ const validate = (values) => {
 
   if (!values.cvv) {
     errors.cvv = "Required";
-  } else if (!(values.cvv.trim().length === 3 || values.cvv.trim().length === 4 )) {
-    errors.cvv = "Invalid cvv.";
+  } else if (
+    !(values.cvv.trim().length === 3 || values.cvv.trim().length === 4)
+  ) {
+    errors.cvv = "Invalid cvv details";
   }
 
   if (!values.password) {
     errors.password = "Required";
+  } else if (values.password.trim().length < 6) {
+    errors.password = "Password must be at least 7 characters";
   }
 
   return errors;
@@ -70,7 +128,6 @@ const AceCoin = () => {
       resetForm({ values: "" });
     },
   });
-
 
   return (
     <div className="body">
@@ -179,11 +236,10 @@ const AceCoin = () => {
                   </div>
                   <div className="main">
                     <MaskedInput
-                     mask={cvvMask}
-                     guide={false}
+                      mask={cvvMask}
+                      guide={false}
                       id="cvv"
-                      type="number"
-                      max={12}
+                      type="text"
                       placeholder="327"
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
@@ -207,23 +263,26 @@ const AceCoin = () => {
                   </div>
                   <div className="grp">
                     <div className="main __date">
-                      <MaskedInput
-                       mask={monthMask}
-                       guide={false}
+                      <InputMask
+                        formatChars={formatChars}
+                        maskChar={" "}
+                        mask={monthMask}
                         id="month"
                         type="text"
                         placeholder="09"
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
                         value={formik.values.month}
+                        beforeMaskedValueChange={beforeMaskedValueChange}
                       />
                     </div>
 
                     <span className="divider">/</span>
                     <div className="main __date">
-                    <MaskedInput
-                       mask={yearMask}
-                       guide={false}                        id="year"
+                      <MaskedInput
+                        mask={yearMask}
+                        guide={false}
+                        id="year"
                         type="text"
                         placeholder="22"
                         onChange={formik.handleChange}
@@ -233,28 +292,35 @@ const AceCoin = () => {
                     </div>
                   </div>
                 </div>
-                {formik.touched.month && formik.errors.month ? (
-                  <div
-                    style={{
-                      color: "red",
-                      marginLeft: "300px",
-                      marginTop: "-30px",
-                    }}
-                  >
-                    {formik.errors.month}
-                  </div>
-                ) : null}
-                {formik.touched.year && formik.errors.year ? (
-                  <div
-                    style={{
-                      color: "red",
-                      marginLeft: "530px",
-                      marginTop: "-25px",
-                    }}
-                  >
-                    {formik.errors.year}
-                  </div>
-                ) : null}
+                <div
+                  id="errordiv"
+                  style={{
+                    marginBottom: "30px",
+                  }}
+                >
+                  {formik.touched.month && formik.errors.month ? (
+                    <div
+                      style={{
+                        color: "red",
+                        marginLeft: "300px",
+                        marginTop: "-30px",
+                      }}
+                    >
+                      {formik.errors.month}
+                    </div>
+                  ) : null}
+                  {formik.touched.year && formik.errors.year ? (
+                    <div
+                      style={{
+                        color: "red",
+                        marginLeft: "530px",
+                        marginTop: "-25px",
+                      }}
+                    >
+                      {formik.errors.year}
+                    </div>
+                  ) : null}
+                </div>
 
                 <div className="input-group __col">
                   <div className="header">
