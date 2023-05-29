@@ -181,12 +181,23 @@ function Form() {
                   onBlur={formik.handleBlur}
                   value={formik.values.cvv}
                 />
-                {formik.touched.cvv && formik.errors.cvv ? (
-                  <div style={{ color: "red" }}>{formik.errors.cvv}</div>
-                ) : null}
+                
                 <img src={dots} alt="" className="trailing-icon" />
+             
               </div>
+              
             </div>
+            <div
+              id="errordiv"
+              style={{
+                marginBottom: "20px",
+              }}
+            > {formik.touched.cvv && formik.errors.cvv ? (
+                <div style={{ color: "red",
+                marginLeft: "300px",
+                marginTop: "-30px", }}>{formik.errors.cvv}</div>
+              ) : null}</div>
+            
 
             <div className="input-group __col">
               <div className="header">
@@ -230,6 +241,8 @@ function Form() {
               id="errordiv"
               style={{
                 marginBottom: "30px",
+                // display: "inline-flex"
+
               }}
             >
               {formik.touched.month && formik.errors.month ? (
@@ -237,7 +250,7 @@ function Form() {
                   style={{
                     color: "red",
                     marginLeft: "300px",
-                    marginTop: "-30px",
+                    marginTop: "-28px",
                   }}
                 >
                   {formik.errors.month}
@@ -247,8 +260,8 @@ function Form() {
                 <div
                   style={{
                     color: "red",
-                    marginLeft: "530px",
-                    marginTop: "-25px",
+                    marginLeft: "520px",
+                    marginTop: "-26px",
                   }}
                 >
                   {formik.errors.year}
@@ -272,12 +285,19 @@ function Form() {
                   onBlur={formik.handleBlur}
                   value={formik.values.password}
                 />
-                {formik.touched.password && formik.errors.password ? (
-                  <div style={{ color: "red" }}>{formik.errors.password}</div>
-                ) : null}
+                
                 <img src={dots} alt="" className="trailing-icon" />
               </div>
             </div>
+            <div
+              id="errordiv"
+              style={{
+                marginBottom: "20px",
+              }}
+            > {formik.touched.password && formik.errors.password ? (
+                <div style={{ color: "red",   marginLeft: "300px",
+                marginTop: "-30px", }}>{formik.errors.password}</div>
+              ) : null}</div>
 
             <button
               disabled={!(formik.isValid && formik.dirty)}
