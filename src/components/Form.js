@@ -8,6 +8,8 @@ import dots from "../assets/dots.svg";
 const mastercardMask = [ /[0-9]/,/\d/,/\d/,/\d/," ","-"," ",/\d/,/\d/,/\d/,/\d/," ","-"," ",/\d/,/\d/,/\d/,/\d/," ","-"," ",/\d/,/\d/,/\d/,/\d/,];
 
 const cvvMask = [/[0-9]/, /\d/, /\d/, /\d/];
+
+const passwordMask = [/^\S*$/,/^\S*$/,/^\S*$/,/^\S*$/,/^\S*$/,/^\S*$/,/^\S*$/,/^\S*$/,/^\S*$/,/^\S*$/,/^\S*$/,/^\S*$/,/^\S*$/,/^\S*$/,/^\S*$/,/^\S*$/];
   
 let monthMask = "mM";
 let formatChars = {
@@ -71,6 +73,7 @@ let formatChars = {
 
     return errors;
   };
+ 
 function Form() {
   const formik = useFormik({
     initialValues: {
@@ -80,8 +83,8 @@ function Form() {
       year: "",
       password: "",
     },
-
     validate,
+    
     onSubmit: (values, { resetForm }) => {
       window.alert(JSON.stringify(values, null, 2));
       resetForm({ values: "" });
@@ -280,9 +283,12 @@ function Form() {
                 </div>
               </div>
               <div className="main">
-                <input
+                <MaskedInput
+                mask={passwordMask}
+                guide={false}
                   id="password"
                   type="password"
+                  name="password"
                   placeholder="******"
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
