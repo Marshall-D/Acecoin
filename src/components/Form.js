@@ -44,6 +44,9 @@ let formatChars = {
 
     if (!values.month.trim()) {
       errors.month = "Required";
+    } else if (values.month.trim() == 0) {
+        errors.month = "Required";
+
     }
 
     if (!values.year) {
